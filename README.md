@@ -1,6 +1,9 @@
 # Retina
 DeepMagic
 
+Starting point tomorrow.  Implement somthing like `convroll4` see end of *doc.pdf*
+
+
 ## Morten Development
 
 ### main.py

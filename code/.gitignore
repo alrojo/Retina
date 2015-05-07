@@ -60,4 +60,7 @@ target/
 *.jpeg
 *.jpg
 
-/data
+hacking/
+
+*.sublime-project 
+*.sublime-workspace

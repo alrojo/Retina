@@ -26,3 +26,7 @@ test_images = load('Paths.X_test')
 save(Paths.data_dir, {'test_images': test_images})
 del test_images
 
+## TODO: 
+print "this"
+ ## "TODO": "TODO[\\s]*?:[\\s]*(?P<todo>.*)$"
+ print "here"
