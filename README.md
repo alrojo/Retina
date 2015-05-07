@@ -4,3 +4,5 @@ In case you guys didn't know.  This README.md is github flavored markdown (gfm),
 [Markdown](https://guides.github.com/features/mastering-markdown/) is pretty awesome 
 
 ![retina_example](https://kaggle2.blob.core.windows.net/competitions/kaggle/4104/media/retina.jpg)
+
+
