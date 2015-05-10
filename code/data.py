@@ -10,14 +10,16 @@ from sklearn.cross_validation import train_test_split
 
 N_images = main.N_images ## TODO(1)
 
-class Paths:	
-	data_dir = join(getcwd(),'data'))
-	train_dir = join(data_dir,'train')
-	test_dir = train = join(data_dir,'test')
-	train_labels = join(data_dir,'trainLabels.csv')
-	#X_train should be added in data.py
-	#X_valid should be added in data.py
-	#X_test should be added in data.py
+
+#This has been moved to main
+# class Paths(object):	
+# 	data_dir = join(getcwd(),'data'))
+# 	train_dir = join(data_dir,'train')
+# 	test_dir = train = join(data_dir,'test')
+# 	train_labels = join(data_dir,'trainLabels.csv')
+# 	#X_train should be added in data.py
+# 	#X_valid should be added in data.py
+# 	#X_test should be added in data.py
 
 
 

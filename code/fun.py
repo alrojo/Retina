@@ -1,6 +1,7 @@
 
 import numpy as np
-import skimage.io
+#import skimage.io
+from skimage import data, io, filter
 
 def load(paths):
     """
@@ -21,13 +22,17 @@ def save(path, dict_of_files):
 			path: path where the data should be saved
 			dict_of_files: dictionary of variable name and data.
 	 """
-	 [(name, values) in dict_of_files.iteritems()]
-	 print "Saving %s in %s" % (name, path)
-	 str_save = join(path,name)+".npy"
-	 np.save(str_save ,getattr(Paths, name))
-	 print "Gzipping %s" % name
-	 system("gzip " + str_save )
+	[(name, values) in dict_of_files.iteritems()]
+	print "Saving %s in %s" % (name, path)
+	str_save = join(path,name)+".npy"
+	np.save(str_save ,getattr(Paths, name))
+	print "Gzipping %s" % name
+	system("gzip " + str_save )
 	 
+
+
+def isString(s): 
+	return isinstance(s, basestring)
 
 
 # from data.py
