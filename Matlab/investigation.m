@@ -62,7 +62,29 @@ end
 
 %% Detect edges in the image
 B = edge(mean(bsxfun(@times, A, ma)  ,3),'canny');
+C = bsxfun(@times, A, ma);
+figure(1)
 if doplot,
-   imshow(A)
+   imshow(B)
 end
 [h,w] = size(B);
+C = mean(bsxfun(@times, A, ma)  ,3);
+figure(3)
+imshow(C)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

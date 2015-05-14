@@ -5,7 +5,8 @@ ii = 1
 % Set resolution
 res=512;  
 development = true
-doplot = false; 
+doplot = false;
+doplot = true;
 
 % Path of the images
 % img_folder='C:\train';
@@ -24,8 +25,7 @@ if development
 end
 
 
-
-    
+   
 %% Get the image
 % fprintf('%s. Processing %i of %i\n',fl(ii).name, ii,length(fl));
 A = imread(fullfile(img_folder,fl.name));
@@ -41,14 +41,44 @@ v = ma(round(end/4:end*3/4),round(end/4:end*3/4));
 median(v(:));
 ma = ma / median(v(:));
 
-if false && doplot,
+subplot(2,1,1);     
+B = mean(A,3) > 30; 
+imshow(B)
 
-    subplot(2,1,1);     
-    B = mean(A,3) > 30; 
-    imshow(B)
+subplot(2,1,2);    
+B = ma > 30/250; 
+imshow(B)
 
-    subplot(2,1,2);    
-    B = ma > 30/250; 
-    imshow(B)
-end
 ma = uint8(ma > 30/250);
+
+%% Remove small connected components
+cc = bwconncomp(ma); 
+for j=1:length(cc.PixelIdxList)
+    lp = cc.PixelIdxList{j};
+    if length(lp) < 100, 
+        ma(lp) = 0;
+    end
+end
+
+%% Detect edges in the image
+B = edge(mean(bsxfun(@times, A, ma)  ,3),'canny');
+if doplot,
+   imshow(A)
+end
+[h,w] = size(B);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
