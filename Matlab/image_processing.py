@@ -27,6 +27,13 @@ def image_load((path,name)):
     return path, name, image
 
 
+def image_load_other_arg((image_path,path_out)):
+    name = image_path.split('/')[-1]
+    image = skimage.io.imread(image_path)
+    return path_out, name, image
+
+
+
 def image_save((path, name, image)):
     save_as = os.path.join(path, name)
     save_as = os.path.relpath(save_as)
@@ -196,14 +203,32 @@ def main(path_to_images, path_out):
     # as pil retuned image_save_path
 
 
+    #That sucked, it didnt' work :S
 
-    transform_image = transform_pipeline(pil_resize,
-                                         image_load,
-                                         remove_background_noise,
-                                         flatten_hist,
-                                         image_save)
+    # transform_image = transform_pipeline(pil_resize,
+    #                                      image_load,
+    #                                      remove_background_noise,
+    #                                      flatten_hist,
+    #                                      image_save)
+    # p = mp.Pool(num_cores)
+    # p.map(lambda i: transform_image(i), arguments)
+
+
+    # This works though
+
+    # p = mp.Pool(num_cores)
+    # p.map(lambda i: pil_resize(i), arguments)
+
+
+    transform_image = transform_pipeline( image_load,
+                                          remove_background_noise,
+                                          flatten_hist,
+                                          image_save)
+
     p = mp.Pool(num_cores)
+    arguments2 = zip(arg1, arg2)
     p.map(lambda i: transform_image(i), arguments)
+
 
     return 0
 
@@ -233,7 +258,7 @@ if __name__ == '__main__':
     if len(sys.argv) < 3:
         print usage()
     #path_to_images, path_out
-    program = main(sys.argv[1], sys.argv[2])
+    program = main(str(sys.argv[1]), str(sys.argv[2]))
 
 
 ####################################################
