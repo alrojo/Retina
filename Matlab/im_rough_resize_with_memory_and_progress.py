@@ -61,7 +61,7 @@ def main():
     start_time = time.time()
     size = 424
     path_in = "/home/morten/Git_and_dropbox_not_friends/Retina/sample/"
-    path_out = "/home/morten/Git_and_dropbox_not_friends/Retina/sample/same_size2"
+    path_out = "/home/morten/Git_and_dropbox_not_friends/Retina/sample/same_size3"
 
     if not os.path.exists(path_out):
         os.makedirs(path_out, mode=0755)
