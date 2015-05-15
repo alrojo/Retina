@@ -15,7 +15,7 @@ import pathos.multiprocessing as mp
 import PIL.Image
 import getopt
 # from joblib import Parallel, delayed # got ditched to pathos
-from memory_profiler import profile as memory_profiling
+# from memory_profiler import profile as memory_profiling
 
 
 
@@ -28,8 +28,8 @@ def pil_resize(image_path, image_save_path, size):
     name = get_name_image(image_path)
     im = PIL.Image.open(image_path)
     # to get everyone the same size
-    size_standard = 1800
-    im.thumbnail((size_standard, size_standard), PIL.Image.LANCZOS)
+    size_standard = 212
+    im.thumbnail(size=(size_standard, size_standard), resample=PIL.Image.LANCZOS)
     d = {key: value for (key, value) in zip(['w', 'h'], im.size)}
     dim_max = max(d, key=d.get)
     dim_min = min(d, key=d.get)
@@ -41,7 +41,7 @@ def pil_resize(image_path, image_save_path, size):
     lower, upper, left, right = [element for tpl in d.values() for element in tpl]
     box = (left, lower, right, upper)
     im = im.crop(box)
-    im.thumbnail((size, size), PIL.Image.LANCZOS)
+    im.thumbnail(size=(size, size), resample=PIL.Image.LANCZOS)
     name = name.replace("jpeg", "png")
     outfile = os.path.join(image_save_path, name)
     im.save(outfile)
@@ -55,13 +55,14 @@ def worker(arg):
     pil_resize(path_in, path_out, size)
     return 0
     
-@memory_profiling
+#@memory_profiling
 def main():
 
     start_time = time.time()
-    size = 424
-    path_in = "/home/morten/Git_and_dropbox_not_friends/Retina/sample/"
-    path_out = "/home/morten/Git_and_dropbox_not_friends/Retina/sample/same_size2"
+    size = 200
+
+    path_in = "/home/ubuntu/BIG_data/test"
+    path_out = "/home/ubuntu/BIG_data/train_200by200_cropped"
 
     if not os.path.exists(path_out):
         os.makedirs(path_out, mode=0755)
