@@ -6,7 +6,7 @@ import skimage.color
 import numpy as np
 # import matplotlib.pyplot as plt
 import sys
-# from clint.textui import progress
+from clint.textui import progress
 import glob
 # import time
 # from memory_profiler import profile as memory_profiling
@@ -18,7 +18,11 @@ import getopt
 
 
 def image_load(path):
+    # print "load1"
+    # print "path is:"
+    # print path
     image = skimage.io.imread(path)
+    # print "load2"
     return image
 
 
@@ -57,16 +61,22 @@ def get_name_image(path):
 
 def worker(arg):
     path_in , path_out = arg
+    # print "1"
     img = image_load(path_in)
+    # print "2"
     img = remove_background_noise(img)
+    # print "3"
     img = flatten_hist(img)
+    # print "4"
     name = get_name_image(path_in)
+    # print "5"
     image_save(path_out, name, img)
 
 
 def main():
-    path_in = "/home/morten/Git_and_dropbox_not_friends/Retina/sample/resized_and_cropped"
-    path_out = "/home/morten/Git_and_dropbox_not_friends/Retina/sample/resized_and_cropped/removed_back_ground"
+
+    path_in = "/home/ubuntu/BIG_data/test_1024by1024_cropped"
+    path_out = "/home/ubuntu/BIG_data/test_1024_nonoise_flatten"
 
     if not os.path.exists(path_out):
         os.makedirs(path_out, mode=0755)
@@ -74,13 +84,41 @@ def main():
     if (len(image_names) == 0):
         image_names = glob.glob(os.path.join(path_in, "*.png"))
     image_names.sort
-    num_cores = num_cores = multiprocessing.cpu_count()
+    num_cores = multiprocessing.cpu_count()//2 - 1
     #p for parallel
     p = mp.Pool(num_cores)
     arg1 = image_names
     arg2 = len(arg1)*[path_out]
     arguments = zip(arg1, arg2)
-    p.map(lambda i: worker(i), arguments)
+    # p.map(lambda i: worker(i), (arguments))
+    L = len(arguments)   
+
+    batch_size =  num_cores
+    batches =  L//batch_size
+
+    
+    for batch in progress.bar(xrange(batches)):
+        if batch == (batches-1):
+            arg = arguments[batch*batch_size:]
+            # print arg
+        else:
+           start = batch * batch_size
+           end = start + batch_size
+           arg = arguments[start:end]
+
+        #print get_name_image(arg[0][0])
+        p.map(lambda i: worker(i), arg)
+    # print "type %s and length %d" % (str(type(arg)), end-start )
+        
+
+    # arg = arguments[45:46]
+    # p.map(lambda i: worker(i), arg)
+    # print "what"
+    # print "\n"*5
+
+    # arg = arguments[46:47]
+    # p.map(lambda i: worker(i), arg)
+
 
 
 if __name__ == '__main__':

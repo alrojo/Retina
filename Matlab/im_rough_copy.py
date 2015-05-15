@@ -27,7 +27,7 @@ def get_name_image(path):
 def pil_resize(image_path):
     global size
     global path_out
-    # save = False
+    save = False
     image_save_path = path_out
     name = get_name_image(image_path)
     im = PIL.Image.open(image_path)
@@ -45,7 +45,7 @@ def pil_resize(image_path):
         dim_min = 'h'
 
     if d[dim_min]>=size:
-        # save = True
+        save = True
         # print "3: " + str(dim_min)
         dif = d[dim_max] - d[dim_min]
         # print "4: " + str(dif)
@@ -66,7 +66,10 @@ def pil_resize(image_path):
         name = name.replace("jpeg", "png")
         # print "5\n"
         outfile = os.path.join(image_save_path, name)
+
+    if save: 
         im.save(outfile)
+    return 0
 
 
 def worker(path_in):
@@ -79,8 +82,8 @@ def main():
     global path_out
     start_time = time.time()
     size = 1024
-    path_in = "/home/ubuntu/BIG_data/train"
-    path_out = "/home/ubuntu/BIG_data/train_1024by1024_cropped"
+    path_in = "/home/ubuntu/BIG_data/test"
+    path_out = "/home/ubuntu/BIG_data/test_1024by1024_cropped"
 
     if not os.path.exists(path_out):
         os.makedirs(path_out, mode=0755)
@@ -88,7 +91,7 @@ def main():
     if (len(image_names) == 0):
         image_names = glob.glob(os.path.join(path_in, "*.png"))
     image_names.sort
-    num_cores = multiprocessing.cpu_count()//2 - 1
+    num_cores = multiprocessing.cpu_count()-1
     #p for parallel
     p = mp.Pool(num_cores)
     # print "Number of cores %d" % num_cores  # So gp2.x2large has 8 cores
@@ -98,8 +101,8 @@ def main():
     # arg3 = L*[size] 
     # arguments = zip(arg1, arg2, arg3)
     L = len(image_names)
-    batch_size = num_cores
-    batches = L//num_cores
+    batch_size = 70
+    batches = L//70
 
     for batch in progress.bar(xrange(batches)):
         if batch == (batches-1):
@@ -110,9 +113,9 @@ def main():
            end = start + batch_size
            arg = image_names[start:end]
         # print "type %s and length %d" % (str(type(arg)), end-start )
-        # start = batch * batch_size
-        # end = start + batch_size
-        # arg = image_names[start:end]
+        start = batch * batch_size
+        end = start + batch_size
+        arg = image_names[start:end]
         p.map(lambda i: worker(i), arg)
     
     print ("prgram completed in %f seconds") % (time.time()-start_time)
@@ -170,18 +173,3 @@ if __name__ == '__main__':
 
 
     # for batch in xrange(batches):
-
-
-
-
- # minimum image for raw training set. 15942_left.jpeg  433 by 289 pixels
- # rsync -azP ubuntu@52.1.254.11:/home/ubuntu/BIG_data/train/15942_left.jpeg .
-
-
- # minimum image for raw testing set.  769_left.jpeg  320 by 211 pixels
- # rsync -azP ubuntu@52.1.254.11:/home/ubuntu/BIG_data/test/769_left.jpeg .
-
-# and there is a rotated image in the test set: 15840_left.jpeg
-# rsync -azP ubuntu@52.1.254.11:/home/ubuntu/BIG_data/test/15840_left.jpeg .
-
-# I should make a program that deletes every image smaller than HD
