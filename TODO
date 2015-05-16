@@ -1,0 +1,28 @@
+* fix bugs in train.py refactor ???
+
+* also refactor predict.py to use new generators <--
+
+
+
+
+* better JPEGs (higher quality) <--
+
+
+
+
+* improve results: increase batch size, higher/lower learning rate, longer training
+
+
+
+* decreasing learning rate schedule
+
+* global contrast normalization (per-image)
+
+
+
+
+LATER
+
+* continuous kappa with quadratic (or other) interpolation
+
+* exploit the correlation between both eyes
