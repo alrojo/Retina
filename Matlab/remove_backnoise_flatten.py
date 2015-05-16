@@ -75,8 +75,18 @@ def worker(arg):
 
 def main():
 
-    path_in = "/home/ubuntu/BIG_data/test_1024by1024_cropped"
-    path_out = "/home/ubuntu/BIG_data/test_1024_nonoise_flatten"
+    # path_in = "/home/ubuntu/BIG_data/test_1024by1024_cropped"
+    # path_out = "/home/ubuntu/BIG_data/test_1024_nonoise_flatten"
+
+    path_in = "/home/ubuntu/BIG_data/train_1024by1024_cropped"
+    path_out = "/home/ubuntu/BIG_data/train_1024_nonoise_flatten"
+
+    # path_in = "/home/ubuntu/BIG_data/test_210by210_cropped"
+    # path_out = "/home/ubuntu/BIG_data/test_210_nonoise_flatten"
+
+
+    # path_in = "/home/ubuntu/BIG_data/train_210by210_cropped"
+    # path_out = "/home/ubuntu/BIG_data/train_210_nonoise_flatten"
 
     if not os.path.exists(path_out):
         os.makedirs(path_out, mode=0755)
@@ -84,7 +94,7 @@ def main():
     if (len(image_names) == 0):
         image_names = glob.glob(os.path.join(path_in, "*.png"))
     image_names.sort
-    num_cores = multiprocessing.cpu_count()//2 - 1
+    num_cores = multiprocessing.cpu_count()
     #p for parallel
     p = mp.Pool(num_cores)
     arg1 = image_names
