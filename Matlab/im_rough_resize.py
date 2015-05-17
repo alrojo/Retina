@@ -44,7 +44,7 @@ def pil_resize(image_path):
         dim_max = 'w'
         dim_min = 'h'
 
-    if d[dim_min]>=size:
+    if d[dim_min]>size:
         # save = True
         # print "3: " + str(dim_min)
         dif = d[dim_max] - d[dim_min]
@@ -61,12 +61,13 @@ def pil_resize(image_path):
         # print "2\n"
         im = im.crop(box)
         # print "3\n"
-        im.thumbnail((size,size) , PIL.Image.LANCZOS)
-        # print "4\n"
-        name = name.replace("jpeg", "png")
-        # print "5\n"
-        outfile = os.path.join(image_save_path, name)
-        im.save(outfile)
+
+    im.thumbnail((size,size) , PIL.Image.LANCZOS)
+    # print "4\n"
+    name = name.replace("jpeg", "png")
+    # print "5\n"
+    outfile = os.path.join(image_save_path, name)
+    im.save(outfile)
 
 
 def worker(path_in):
@@ -78,9 +79,9 @@ def main():
     global size
     global path_out
     start_time = time.time()
-    size = 1024
-    path_in = "/home/ubuntu/BIG_data/train"
-    path_out = "/home/ubuntu/BIG_data/train_1024by1024_cropped"
+    size = 256
+    path_in = "/home/ubuntu/BIG_data/test"
+    path_out = "/home/ubuntu/data_storage/data/test/cropped_256"
 
     if not os.path.exists(path_out):
         os.makedirs(path_out, mode=0755)
